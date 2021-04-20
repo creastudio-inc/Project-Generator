@@ -1,0 +1,91 @@
+﻿@model ProjectGenerator.Models.ProjectViewModel
+@{
+    ViewBag.Title = "Index";
+}
+@helper sortLink(string name, int id)
+{
+    <a href="@Url.Action("List", "project", new { sortby = id, isasc = (id == ViewBag.sortBy ? (!@ViewBag.isAsc).ToString().ToLower() : true) })">@name</a>
+    if (id == ViewBag.sortBy)
+    {
+        <span class="fa fa-arrow-@(ViewBag.isAsc ? "up" : "down" )" style=" float: right; "></span>
+    }
+}
+
+@helper buildLink(int i, string innerContent = "")
+{
+    <li class="page-item @(i ==  Model.pager.CurrentPage ? "active" : "")">
+        <a class="page-link" href="@Url.Action("List", "project", new { pageNumber = i, sortBy = ViewBag.sortBy, isAsc = ViewBag.isAsc })">@(innerContent)</a>
+    </li>
+}
+<section class="pad-tb">
+    <div class="container">
+   
+        <p>
+            @Html.ActionLink("Create New", "Add")
+        </p>
+        <div class="">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="check-all"></th>
+                        <th>@sortLink("Name", 1)</th>
+                        <th>@sortLink("Short Description", 2)</th>
+                        <th>@sortLink("CreatedOn", 5)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.List.Any())
+                    {
+                        <tr><td colspan="4">no data</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.List.Select((value, i) => new { i, value }))
+                        {
+                            <tr>
+                                <th scope="row">
+                                    <input type="checkbox" class="check-item" name="ids[]" value="@item.value.Id">
+                                </th>
+                                <th scope="row">@item.value.Name</th>
+                                <th scope="row">@item.value.Description</th>
+                                <td>@item.value.CreatedOn</td>
+                                <td>
+                                    <a class="btn btn-sm btn-info" href="@Url.Action("detail", new { id = @item.value.Id })">Detail</a>
+                                    <a class="btn btn-sm btn-primary" href="@Url.Action("update", new { id = @item.value.Id })">Edit</a>
+                                    <a class="btn btn-sm btn-danger" href="@Url.Action("delete", new { id = @item.value.Id })">Delete</a>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <!-- Paging -->
+            @if (Model.pager.EndPage > 1)
+            {
+                <ul class="pagination justify-content-center pagination-rounded">
+                    <!--If Current page is not the First Page, we will show Button/Link to go First or on Previous page-->
+                    @if (Model.pager.CurrentPage > 1)
+                    {
+                        @buildLink(1, "<<");
+                        @buildLink((Model.pager.CurrentPage - 1), "<");
+                    }
+                    <!--Paging from StartPage to the end Page-->
+                    @for (var page = Model.pager.StartPage; page <= Model.pager.EndPage; page++)
+                    {
+                        @buildLink(page, page.ToString());
+                    }
+                    <!--If Current Page is not the Last Page then show Next and Last Button/link on Paging-->
+                    @if (Model.pager.CurrentPage < Model.pager.TotalPages)
+                    {
+                        @buildLink((Model.pager.CurrentPage + 1), ">");
+                        @buildLink((Model.pager.TotalPages), ">>");
+                    }
+                </ul>
+            }
+        </div>
+        </div>
+</section>

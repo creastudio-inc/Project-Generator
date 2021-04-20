@@ -1,0 +1,42 @@
+﻿@model ProjectGenerator.Controllers.FormModal
+@{
+    ViewBag.Title = "Index";
+}
+<!-- Bootstrap Css -->
+ 
+<link href="~/Content/bootstrap2.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/app.min.css" rel="stylesheet" />
+<section class="pad-tb">
+    <div class="container">
+        @foreach (var item in Model.Inputs.OrderBy(x => x.InputType))
+        {
+            var id = Guid.NewGuid();
+            if (item.InputType == "select")
+            {
+                <div class="@item.DivClass">
+                    <label for="@id" class="@item.LabelClass">Select</label>
+                    <select id="@id" class="@item.InputClass">
+                        <option>Select</option>
+                        <option>Large select</option>
+                        <option>Small select</option>
+                    </select>
+                </div>
+            }
+            if (item.InputType == "radio" || item.InputType == "checkbox")
+            {
+                <div class="@item.DivClass">
+                    <input id="@id" class="@item.InputClass" type="@item.InputType">
+                    <label for="@id" class="@item.LabelClass">@item.InputType</label>
+                </div>
+            }
+            else
+            {
+                <div class="@item.DivClass">
+                    <label for="@id" class="@item.LabelClass">@item.InputType</label>
+                    <input id="@id" class="@item.InputClass" type="@item.InputType">
+                </div>
+            }
+            <div class="row" style=" margin-top: 10px; margin-bottom: 10px; "></div>
+        }
+    </div>
+</section>

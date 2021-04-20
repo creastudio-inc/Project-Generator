@@ -1,0 +1,15 @@
+﻿@{
+    string text = (string)TempData["FlashMessage.Text"];
+    string cssClass = null;
+    if (!string.IsNullOrWhiteSpace(text))
+    {
+        ProjectGenerator.Controllers.Enum.FlashMessageType type = (ProjectGenerator.Controllers.Enum.FlashMessageType)TempData["FlashMessage.Type"];
+        cssClass = type.ToString().ToLower();
+    }
+}
+@if (!string.IsNullOrWhiteSpace(text))
+{
+    <div class="alert alert-@cssClass">
+        @text
+    </div>
+}

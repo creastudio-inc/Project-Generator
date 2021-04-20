@@ -1,0 +1,95 @@
+﻿@model ProjectGenerator.Models.Table
+
+@{
+    ViewBag.Title = "Detail";
+}
+
+<section class="about-sec classic-bg1 pad-tb">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-10">
+                <div class="common-heading">
+                    <h1 class="mb30">@Model.Name</h1>
+                    <p>
+                        @Model.Description
+                    </p>
+
+                </div>
+            </div> 
+        </div>
+    </div>
+</section>
+
+<section class="service-block pad-tb bg-gradient7">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="common-heading ptag">
+                    <span>Welcome to Niwax</span>
+                    <h2>Perks To Work With Niwax</h2>
+                    <p class="mb30">Donec metus lorem, vulputate at sapien sit amet, auctor iaculis lorem. In vel hendrerit nisi. Vestibulum eget risus velit.</p>
+                    <p>
+                       
+                        <a href="@Url.Action("Add", "DataField", new { TableId = Model.Id })">Create New</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            @foreach(var item in Model.DataFieldViewModels.Where(x => x.IsDeleted == false))
+            {
+            <div class="col-lg-4 col-sm-6 mt30  wow fadeIn" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeIn;">
+                <div class="s-block wide-sblock">
+                    <div class="s-block-content">
+                        <h4>@item.Name</h4>
+                        <p>Type : @item.Type</p>
+                        <p>Lengh : @item.Lengh</p>
+                        <p>Nullable : @item.Nullable</p>
+                        <p>
+                            <a href="@Url.Action("Update", "DataField", new { Id = item.Id ,ProjectID=Model.ProjectID  })">Edit</a>
+                            <a href="@Url.Action("Delete", "DataField", new {Id = item.Id ,TableId=Model.Id })">Delete</a>
+                        </p>
+
+                    </div>
+                </div>
+            </div> 
+            }
+        </div>
+
+    </div>
+</section>
+
+
+<section class="service-block bg-gradient6 pad-tb light-dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="common-heading ptag">
+                    <span>Values</span>
+                    <h2>Niwax's Core Values</h2>
+                    <p class="mb30">We think big and have hands in all leading technology platforms to provide you wide array of services.</p>
+                    <p>
+                        <a href="@Url.Action("Add", "DataFieldForeignKey", new { TableId = Model.Id ,ProjectID=Model.ProjectID })">Create New</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row upset link-hover">
+
+            @foreach (var item in Model.dataFieldForeignKeyViewModels.Where(x=>x.IsDeleted==false))
+            {
+                <div class="col-lg-4 col-sm-6 mt30 wow fadeInUp" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                    <div class="s-block">
+                        <h4>@item.Name</h4>
+                        <p>Required : @item.Required</p>
+                        <p>DataField :@(item.TableView != null ?item.TableView.Name:"")</p>
+                        <p>
+                        <a href="@Url.Action("Update", "DataFieldForeignKey", new {Id = item.Id  ,ProjectID=Model.ProjectID  })">Edit</a>
+                        <a href="@Url.Action("Delete", "DataFieldForeignKey", new {Id = item.Id ,TableViewID=Model.Id })">Delete</a>
+                        </p>
+                    </div>
+                </div>
+            }
+            </div>
+    </div>
+</section>
