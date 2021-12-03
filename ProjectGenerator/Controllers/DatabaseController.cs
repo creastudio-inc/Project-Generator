@@ -78,7 +78,7 @@ namespace ProjectGenerator.Controllers
 
                 TableService.doCreateOrUpdate(model);
                 SetFlash(Enum.FlashMessageType.Success, (model.Id == Guid.Empty) ? "successfully created" : "successfully updated");
-                return RedirectToAction("List", new { id = model.ProjectID });
+                return RedirectToAction("List", new { IDProject = model.ProjectID });
             }
             return View(model);
         }
