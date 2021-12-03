@@ -47,7 +47,7 @@ namespace ProjectGenerator.Controllers
                 if (link.ChildNodes.Count > 4)
                 {
                      var InputModal = new InputModal();
-                    InputM-odal.DivClass = String.Join(" ", link.Attributes.Where(x => x.Name == "class").Select(x => x.Value).OrderBy(x => x));
+                    InputModal.DivClass = String.Join(" ", link.Attributes.Where(x => x.Name == "class").Select(x => x.Value).OrderBy(x => x));
 
                     foreach (var node in link.ChildNodes)
                     {
